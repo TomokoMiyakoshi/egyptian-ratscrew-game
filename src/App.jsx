@@ -1,27 +1,9 @@
-import { useState } from 'react'
-import './App.css'
-import Card from './components/Card';
+import { useState } from "react"
+import "./App.css"
+import Card from "./components/Card";
+import {getShuffledDeck} from "./utils.jsx";
 
 export default function App() {
-
-  // using fisher-yates to shuffle deck
-  const shuffleArray = array => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-      }
-      return array
-  }
-
-  const getShuffledDeck = () => {
-    // shuffle deck of cards
-    let cardVals = Array.from({length: 13}, (val, i) => i+ 1)
-    let deck = [...cardVals, ...cardVals, ...cardVals, ...cardVals]
-    let shuffledDeck = shuffleArray(deck)
-    return shuffledDeck
-  }
 
   const [shuffledDeck, setShuffledDeck] = useState(getShuffledDeck)
   const [deckA, setDeckA] = useState(shuffledDeck.slice(0, 26))
@@ -45,7 +27,7 @@ export default function App() {
   return (
     <div className="App">
       <div className="board">
-      {topCardA}
+      {/* {topCardA} */}
       <div className="deck-a">
         <p>A</p>
       </div>
