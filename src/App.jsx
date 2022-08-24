@@ -2,12 +2,13 @@ import { useState } from "react"
 import "./App.css"
 import Card from "./components/Card";
 import {getShuffledDeck} from "./utils.jsx";
-import Queue from "./Queue.js"
+// import Queue from "./Queue.js"
+import {useQueueState} from "rooks"
 
 export default function App() {
-  const [shuffledDeck, setShuffledDeck] = useState(new Queue(getShuffledDeck()))
-  // const [deckA, setDeckA] = useState(shuffledDeck.slice(0, 26))
-  // const [deckB, setDeckB] = useState(new Queue(shuffledDeck.slice(26)))
+  const [shuffledDeck, setShuffledDeck] = useState(getShuffledDeck())
+  const [deckA, {enqueueA, dequeueA, lengthA}] = useQueueState(shuffledDeck.slice(0, 26))
+  const [deckB, {enqueueB, dequeueB, lengthB}] = useQueueState(shuffledDeck.slice(26))
   const [mistakePile, setMistakePile] = useState([3])
   const [belowTopCard, setBelowTopCard] = useState(null)
   const [bottomCard, setBottomCard] = useState(null)
@@ -21,8 +22,8 @@ export default function App() {
   const topMistakeCard = <Card mistake={true} value={mistakePile[mistakePile.length - 1]} />
   // console.log("rerender")
   console.log(shuffledDeck)
-  // console.log(deckA)
-  // console.log(deckB)
+  console.log(deckA)
+  console.log(deckB)
 
   return (
     <div className="App">
