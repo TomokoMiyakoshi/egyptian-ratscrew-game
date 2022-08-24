@@ -11,7 +11,6 @@ const shuffleArray = array => {
     return array
 }
 
-// return array of numbers representing shuffled deck of cards
 export const getShuffledDeck = () => {
     let cardVals = Array.from({length: 13}, (val, i) => i+ 1)
     let deck = [...cardVals, ...cardVals, ...cardVals, ...cardVals]
