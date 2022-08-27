@@ -1,29 +1,22 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./App.css"
 import Card from "./components/Card";
 import {getShuffledDeck} from "./utils.jsx";
-// import Queue from "./Queue.js"
-import {useQueueState} from "rooks"
+import useQueue from "./hooks/useQueue.js"
 
 export default function App() {
-  const [shuffledDeck, setShuffledDeck] = useState(getShuffledDeck())
-  const [deckA, {enqueueA, dequeueA, lengthA}] = useQueueState(shuffledDeck.slice(0, 26))
-  const [deckB, {enqueueB, dequeueB, lengthB}] = useQueueState(shuffledDeck.slice(26))
-  const [mistakePile, setMistakePile] = useState([3])
-  const [belowTopCard, setBelowTopCard] = useState(null)
-  const [bottomCard, setBottomCard] = useState(null)
-  const [topCard, setTopCard] = useState(null)
-  const [topIndexA, setTopIndexA] = useState(0)
-  const [topIndexB, setTopIndexB] = useState(0)
+  const [shuffledDeck] = useState(getShuffledDeck())
+  const {queue: deckA, enqueue: enqueueA, dequeue: dequeueA} = useQueue(shuffledDeck.slice(0, 26))
+  const {queue: deckB, enqueue: enqueueB, dequeue: dequeueB} = useQueue(shuffledDeck.slice(26))
+  const [mistakePile, setMistakePile] = useState([])
+  const {queue: pile, enqueue: enqueuePile, back: topPileCard, front: bottomPileCard} = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
 
-  // const topCardA = <Card key={topIndexA} value={deckA[topIndexA]}/>
-  // const topCardB = <Card key={25 + topIndexB} value={deckB[topIndexB]}/>
   const topMistakeCard = <Card mistake={true} value={mistakePile[mistakePile.length - 1]} />
   // console.log("rerender")
-  console.log(shuffledDeck)
-  console.log(deckA)
-  console.log(deckB)
+  // console.log(shuffledDeck)
+  // console.log(deckA)
+  // console.log(deckB)
 
   return (
     <div className="App">
@@ -37,7 +30,8 @@ export default function App() {
       </div>
       {mistakePile.length > 0 && topMistakeCard}
       </div>
-      
     </div>
   )
 }
+
+
