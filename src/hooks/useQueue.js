@@ -14,11 +14,11 @@ const useQueue = (array = []) => {
         }
     }
 
-    const back = queue[queue.length]
+    const back = queue[queue.length - 1]
 
     const front = queue[0]
 
-    return {queue, enqueue, dequeue}
+    return {queue, enqueue, dequeue, back, front}
 }
 
 export default useQueue
