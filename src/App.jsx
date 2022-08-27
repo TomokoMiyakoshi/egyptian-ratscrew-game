@@ -12,16 +12,36 @@ export default function App() {
   const {queue: pile, enqueue: enqueuePile, back: topPileCard, front: bottomPileCard} = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
 
-  const topMistakeCard = <Card mistake={true} value={mistakePile[mistakePile.length - 1]} />
+  // const topMistakeCardElem = <Card mistake={true} value={mistakePile[mistakePile.length - 1].value} />
+
   // console.log("rerender")
   // console.log(shuffledDeck)
   // console.log(deckA)
   // console.log(deckB)
 
+  const addToPile = (e) => {
+    e.preventDefault()
+    
+    // move top card from current turn's player's deck to pile
+    if (playerATurn) {
+      enqueuePile(dequeueA())
+    } else {
+      enqueuePile(dequeueB())
+    }
+    // change player turn
+    setPlayerATurn(playerATurn => !playerATurn)
+  }
+  
+  playerATurn ? console.log("player A") : console.log("player B")
+  console.log("deck A: ", deckA)
+  console.log("deck B: ", deckB)
+  console.log("pile: ", pile)
+
+
   return (
     <div className="App">
       <div className="board">
-      {/* {topCardA} */}
+      {topPileCard && <Card key={topPileCard.id} value={topPileCard.value}/>}
       <div className="deck-a">
         <p>A</p>
       </div>
@@ -30,6 +50,7 @@ export default function App() {
       </div>
       {mistakePile.length > 0 && topMistakeCard}
       </div>
+      <button onClick={addToPile}>Flip card</button>
     </div>
   )
 }
