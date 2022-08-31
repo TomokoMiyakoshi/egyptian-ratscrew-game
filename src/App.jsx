@@ -57,14 +57,11 @@ export default function App() {
       console.log("reward player")
 
       rewardPlayer(isSlapperA)
-      // // set player turn to slapper's turn
-      // setPlayerATurn(isSlapperA? true : false)
+      // set player turn to slapper's turn
+      setPlayerATurn(isSlapperA? true : false)
       
     } else {
       console.log("punish player")
-
-      // switch player turn
-      // setPlayerATurn(playerATurn => !playerATurn)
     }
 
     setCanSlap(false)
