@@ -18,6 +18,7 @@ export default function App() {
   const [playerATurn, setPlayerATurn] = useState(true)
   const [canSlap, setCanSlap] = useState(true)
   const [pileWinner, setPileWinner] = useState("")
+  const [gameOver, setGameOver] = useState(false)
   // const topMistakeCardElem = <Card mistake={true} value={mistakePile[mistakePile.length - 1].value} />
 
   console.log({pile})
@@ -124,10 +125,11 @@ export default function App() {
   return (
     <div className="App">
       <div className="board">
+      <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
       <div className="deck-a">
         <p>A</p>
       </div>
-      {pile.queue.length > 0 && <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner}/>}
+      {pile.queue.length > 0 && !gameOver && <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner}/>}
       <div className="deck-b">
         <p>B</p>
       </div>
