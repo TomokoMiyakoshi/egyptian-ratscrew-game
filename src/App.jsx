@@ -8,35 +8,42 @@ export default function App() {
   const [shuffledDeck] = useState(getShuffledDeck())
   const testDeckA = [{id:1, value:1},{id:2, value:1},{id:3, value:2},{id:4, value:3}]
   const testDeckB = [{id:5, value:2},{id:6, value:6},{id:7, value:6},{id:8, value:1}]
-  const {queue: deckA, enqueue: enqueueA, dequeue: dequeueA} = useQueue(testDeckA)
-  const {queue: deckB, enqueue: enqueueB, dequeue: dequeueB} = useQueue(testDeckB)
+  const deckA = useQueue(testDeckA)
+  const deckB = useQueue(testDeckB)
 
   // const {queue: deckA, enqueue: enqueueA, dequeue: dequeueA} = useQueue(shuffledDeck.slice(0, 26))
   // const {queue: deckB, enqueue: enqueueB, dequeue: dequeueB} = useQueue(shuffledDeck.slice(26))
-  const {queue: mistakePile, enqueue: enqueueMistake, back: topMistakeCard} = useQueue([])
-  const {queue: pile, enqueue: enqueuePile, back: topPileCard, front: bottomPileCard} = useQueue([])
+  const mistakePile = useQueue([])
+  const pile = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
   const [canSlap, setCanSlap] = useState(true)
-
+  const [pileWinner, setPileWinner] = useState("")
   // const topMistakeCardElem = <Card mistake={true} value={mistakePile[mistakePile.length - 1].value} />
 
-  // console.log("rerender")
-  // console.log(shuffledDeck)
-  // console.log(deckA)
-  // console.log(deckB)
+  console.log({pile})
+  console.log("Deck A:", deckA.queue)
+  console.log("Deck B:", deckB.queue)
 
-  const rewardPlayer = (isSlapperA) => {
-    // move all cards in pile to slapper's deck
-  }
+  const flipCard = (e) => {
+    e.preventDefault()
 
-  const punishPlayer = (isSlapperA) => {
-    // move slapper's top card to mistake pile
-    if (isSlapperA) {
-      enqueueMistake(dequeueA)
+    console.log(playerATurn ? "Player A" : "Player B", "flipping")
+    
+    // move top card from current turn's player's deck to pile
+    if (playerATurn) {
+      pile.enqueue(deckA.dequeue())
+      // check if deck is empty
     } else {
-      enqueueMistake(dequeueB)
+      pile.enqueue(deckB.dequeue())
+      // check if deck is empty
     }
+    
+    // change player turn
+    setPlayerATurn(playerATurn => !playerATurn)
+
+    setCanSlap(true)
   }
+
   const slapPile = (isSlapperA) => {
     if (!canSlap) {
       console.log("cannot slap")
@@ -48,10 +55,9 @@ export default function App() {
     if (isValidSlap()) {
       console.log("reward player")
 
-      // rewardPlayer(isSlapperA)
+      rewardPlayer(isSlapperA)
       // // set player turn to slapper's turn
       // setPlayerATurn(isSlapperA? true : false)
-      // setPlayerATurn(playerATurn => !playerATurn)
       
     } else {
       console.log("punish player")
@@ -65,54 +71,55 @@ export default function App() {
 
 
   const isValidSlap = () => {
-    console.log("Pile", pile)
-
-    if (pile.length <= 1) {
+    if (pile.queue.length <= 1) {
       return false
     }
 
-    console.log("Top: ", topPileCard?.value)
-    console.log("Under top: ", pile[pile.length - 2]?.value)
-    console.log("Under under top: ", pile[pile.length - 3]?.value)
-    console.log("Bottom:", bottomPileCard?.value)
+    const topCard = pile.back.value
+    const secondCard = pile.queue[pile.queue.length - 2]?.value
+    const thirdCard = pile.queue[pile.queue.length - 3]?.value
+    const bottomCard = pile.front.value
+
+    console.log({topCard})
+    console.log({secondCard})
+    console.log({thirdCard})
+    console.log({bottomCard})
 
     // check for double, top-bottom, and sandwich
-    if (topPileCard.value === pile[pile.length - 2].value || 
-        topPileCard.value === bottomPileCard.value || 
-        pile.length >= 3 && topPileCard.value === pile[pile.length - 3].value) {
+    if (topCard === secondCard || topCard == thirdCard || topCard == bottomCard) {
       return true
     }
     return false
   }
-  
-  const addToPile = (e) => {
-    e.preventDefault()
 
-    console.log(playerATurn ? "Player A" : "Player B", "flipping")
-    
-    // move top card from current turn's player's deck to pile
-    if (playerATurn) {
-      enqueuePile(dequeueA())
-      // check if deck is empty
-    } else {
-      enqueuePile(dequeueB())
-      // check if deck is empty
-    }
+  const rewardPlayer = (isSlapperA) => {
+    // show slapper has won the pile
+    setPileWinner(isSlapperA ? "A" : "B")
 
-    // console.log("Pile: ", pile)
-    
-    // change player turn
-    setPlayerATurn(playerATurn => !playerATurn)
-
-    setCanSlap(true)
-
+    setTimeout(()=> {
+      // move all cards in pile to slapper's deck
+      if (isSlapperA) {
+        deckA.enqueueAll(pile.queue)
+      } else {
+        deckB.enqueueAll(pile.queue)
+      }
+      
+      pile.emptyQueue()
+      setPileWinner("")
+    }, 1000)  
   }
 
-  // playerATurn ? console.log("player A") : console.log("player B")
-  // console.log("deck A: ", deckA)
-  // console.log("deck B: ", deckB)
-  // console.log("pile: ", pile)
+  const punishPlayer = (isSlapperA) => {
+    // move slapper's top card to mistake pile
+    if (isSlapperA) {
+      // enqueueMistake(dequeueA)
+    } else {
+      // enqueueMistake(dequeueB)
+    }
+  }
+  
 
+  // playerATurn ? console.log("player A") : console.log("player B")
 
   return (
     <div className="App">
@@ -120,13 +127,13 @@ export default function App() {
       <div className="deck-a">
         <p>A</p>
       </div>
-      {topPileCard && <Card key={topPileCard.id} value={topPileCard.value}/>}
+      {pile.queue.length > 0 && <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner}/>}
       <div className="deck-b">
         <p>B</p>
       </div>
-      {mistakePile.length > 0 && topMistakeCard}
+      {mistakePile.queue.length > 0 && mistakePile.front.value}
       </div>
-      <button onClick={addToPile}>Flip card</button>
+      <button onClick={flipCard}>Flip card</button>
       <button onClick={() => slapPile(true)}>Player A slap</button>
       <button onClick={() => slapPile(false)}>Player B slap</button>
       
