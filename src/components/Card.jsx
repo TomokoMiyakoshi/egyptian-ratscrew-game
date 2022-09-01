@@ -1,7 +1,7 @@
 import React from "react"
 
 export default (props) => {
-    const {value, pileWinner} = props;
+    const {value, pileWinner, deckSize} = props;
 
     let color;
     if (pileWinner == "A") {

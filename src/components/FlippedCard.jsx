@@ -1,9 +1,7 @@
 import react from "react"
 
 export default (props) => {
-    const {mistakeMaker, deckName} = props
-
-    console.log({mistakeMaker, deckName})
+    const {mistakeMaker, deckSize, deckName} = props
 
     const styles={
         background: mistakeMaker === deckName ? "red" : "",
@@ -15,7 +13,7 @@ export default (props) => {
     }
     return (
         <div style={styles} className="card flipped-card">
-            <p>{deckName === "mistake" ? "" : deckName}</p>
+            <p>{deckName === "mistake" ?  deckSize: `${deckName}: ${deckSize}`}</p>
         </div>
     )
 }

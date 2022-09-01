@@ -12,10 +12,10 @@ export default function App() {
   const deckA = useQueue(testDeckA)
   const deckB = useQueue(testDeckB)
   const testMistake = [{id:1, value:4},{id:2, value:3},{id:3, value:2},{id:4, value:1}]
-  const mistakePile = useQueue(testMistake)
+  // const mistakePile = useQueue(testMistake)
   // const deckA = useQueue(shuffledDeck.slice(0, 26))
   // const deckB = useQueue(shuffledDeck.slice(26))
-  // const mistakePile = useQueue([])
+  const mistakePile = useQueue([])
   const pile = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
   const [canSlap, setCanSlap] = useState(true)
@@ -23,11 +23,10 @@ export default function App() {
   const [mistakeMaker, setMistakeMaker] = useState("")
   const [gameOver, setGameOver] = useState(false)
 
-  // const topMistakeCardElem = <Card mistake={true} value={mistakePile[mistakePile.length - 1].value} />
-
-  console.log({pile})
   console.log("Deck A:", deckA.queue)
   console.log("Deck B:", deckB.queue)
+  console.log({mistakePile})
+  console.log({pile})
 
   const flipCard = (e) => {
     e.preventDefault()
@@ -117,11 +116,11 @@ export default function App() {
     if (isSlapperA) {
       // highlight mistake maker's deck red
       setMistakeMaker("A")
-      mistakePile.enqueue(deckA.dequeue)
+      mistakePile.enqueue(deckA.dequeue())
       
     } else {
       setMistakeMaker("B")
-      mistakePile.enqueue(deckB.dequeue)
+      mistakePile.enqueue(deckB.dequeue())
     }
     
     // unhighlight mistake maker's deck
@@ -135,20 +134,20 @@ export default function App() {
         <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
 
         <div className="deck">
-          <FlippedCard deckName="A" mistakeMaker={mistakeMaker}/>
+          <FlippedCard deckName="A" mistakeMaker={mistakeMaker} deckSize={deckA.queue.length}/>
         </div>
 
         <div className="deck">
           {pile.queue.length > 0 && !gameOver && 
-            <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner}/>}
+            <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner} deckSize={pile.queue.length} />}
         </div>
         
         <div className="deck">
-          <FlippedCard deckName="B" mistakeMaker={mistakeMaker}/>
+          <FlippedCard deckName="B" mistakeMaker={mistakeMaker} deckSize={deckB.queue.length}/>
         </div>
         
         <div className="deck">
-          {mistakePile.queue.length > 0 && <FlippedCard deckName="mistake"/>}
+          {mistakePile.queue.length > 0 && <FlippedCard deckName="mistake" deckSize={mistakePile.queue.length}/>}
         </div>
       </div>
 

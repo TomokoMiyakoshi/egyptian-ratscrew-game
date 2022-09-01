@@ -14,8 +14,9 @@ const useQueue = (array = []) => {
 
     const dequeue = () => {
         if (queue != []) {
+            const dequedElem = queue[0]
             setQueue(queue => queue.slice(1, queue.length))
-            return queue[0]
+            return dequedElem
         }
     }
 
