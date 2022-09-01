@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import "./App.css"
 import Card from "./components/Card";
+import FlippedCard from "./components/FlippedCard";
 import {getShuffledDeck} from "./utils.jsx";
 import useQueue from "./hooks/useQueue.js"
 
@@ -10,15 +11,18 @@ export default function App() {
   const testDeckB = [{id:5, value:2},{id:6, value:6},{id:7, value:6},{id:8, value:1}]
   const deckA = useQueue(testDeckA)
   const deckB = useQueue(testDeckB)
-
-  // const {queue: deckA, enqueue: enqueueA, dequeue: dequeueA} = useQueue(shuffledDeck.slice(0, 26))
-  // const {queue: deckB, enqueue: enqueueB, dequeue: dequeueB} = useQueue(shuffledDeck.slice(26))
-  const mistakePile = useQueue([])
+  const testMistake = [{id:1, value:4},{id:2, value:3},{id:3, value:2},{id:4, value:1}]
+  const mistakePile = useQueue(testMistake)
+  // const deckA = useQueue(shuffledDeck.slice(0, 26))
+  // const deckB = useQueue(shuffledDeck.slice(26))
+  // const mistakePile = useQueue([])
   const pile = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
   const [canSlap, setCanSlap] = useState(true)
   const [pileWinner, setPileWinner] = useState("")
+  const [mistakeMaker, setMistakeMaker] = useState("")
   const [gameOver, setGameOver] = useState(false)
+
   // const topMistakeCardElem = <Card mistake={true} value={mistakePile[mistakePile.length - 1].value} />
 
   console.log({pile})
@@ -47,7 +51,6 @@ export default function App() {
 
   const slapPile = (isSlapperA) => {
     if (!canSlap) {
-      console.log("cannot slap")
       return
     }
 
@@ -62,6 +65,8 @@ export default function App() {
       
     } else {
       console.log("punish player")
+
+      punishPlayer(isSlapperA)
     }
 
     setCanSlap(false)
@@ -108,34 +113,49 @@ export default function App() {
   }
 
   const punishPlayer = (isSlapperA) => {
-    // move slapper's top card to mistake pile
+    
     if (isSlapperA) {
-      // enqueueMistake(dequeueA)
+      // highlight mistake maker's deck red
+      setMistakeMaker("A")
+      mistakePile.enqueue(deckA.dequeue)
+      
     } else {
-      // enqueueMistake(dequeueB)
+      setMistakeMaker("B")
+      mistakePile.enqueue(deckB.dequeue)
     }
+    
+    // unhighlight mistake maker's deck
+    setTimeout(() => setMistakeMaker(""), 1000)
   }
-  
-
-  // playerATurn ? console.log("player A") : console.log("player B")
 
   return (
     <div className="App">
       <div className="board">
-      <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
-      <div className="deck-a">
-        <p>A</p>
+
+        <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
+
+        <div className="deck">
+          <FlippedCard deckName="A" mistakeMaker={mistakeMaker}/>
+        </div>
+
+        <div className="deck">
+          {pile.queue.length > 0 && !gameOver && 
+            <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner}/>}
+        </div>
+        
+        <div className="deck">
+          <FlippedCard deckName="B" mistakeMaker={mistakeMaker}/>
+        </div>
+        
+        <div className="deck">
+          {mistakePile.queue.length > 0 && <FlippedCard deckName="mistake"/>}
+        </div>
       </div>
-      {pile.queue.length > 0 && !gameOver && <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner}/>}
-      <div className="deck-b">
-        <p>B</p>
-      </div>
-      {mistakePile.queue.length > 0 && mistakePile.front.value}
-      </div>
+
       <button onClick={flipCard}>Flip card</button>
-      <button onClick={() => slapPile(true)}>Player A slap</button>
-      <button onClick={() => slapPile(false)}>Player B slap</button>
-      
+        <button onClick={() => slapPile(true)}>Player A slap</button>
+        <button onClick={() => slapPile(false)}>Player B slap</button>
+        
     </div>
   )
 }

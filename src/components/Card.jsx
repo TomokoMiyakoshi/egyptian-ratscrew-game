@@ -1,7 +1,7 @@
 import React from "react"
 
-export default function Card(props) {
-    const {value, mistake, pileWinner} = props;
+export default (props) => {
+    const {value, pileWinner} = props;
 
     let color;
     if (pileWinner == "A") {
@@ -14,7 +14,7 @@ export default function Card(props) {
     }
 
     return(
-        <div style={styles} className={`open-card ${mistake ? 'mistake': null}`}>
+        <div style={styles} className="card open-card">
             <p>{value}</p>
         </div>
     )
