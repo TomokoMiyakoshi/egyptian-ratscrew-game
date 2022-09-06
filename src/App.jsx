@@ -6,15 +6,15 @@ import {getShuffledDeck} from "./utils.jsx";
 import useQueue from "./hooks/useQueue.js"
 
 export default function App() {
-  const [shuffledDeck] = useState(getShuffledDeck())
-  const testDeckA = [{id:1, value:1},{id:2, value:1},{id:3, value:2},{id:4, value:3}]
-  const testDeckB = [{id:5, value:2},{id:6, value:6},{id:7, value:6},{id:8, value:1}]
-  const deckA = useQueue(testDeckA)
-  const deckB = useQueue(testDeckB)
+  const [shuffledDeck, setShuffledDeck] = useState(getShuffledDeck())
+  // const testDeckA = [{id:1, value:1},{id:2, value:1},{id:3, value:2},{id:4, value:3}]
+  // const testDeckB = [{id:5, value:2},{id:6, value:6},{id:7, value:6},{id:8, value:1}]
+  // const deckA = useQueue(testDeckA)
+  // const deckB = useQueue(testDeckB)
   const testMistake = [{id:1, value:4},{id:2, value:3},{id:3, value:2},{id:4, value:1}]
   // const mistakePile = useQueue(testMistake)
-  // const deckA = useQueue(shuffledDeck.slice(0, 26))
-  // const deckB = useQueue(shuffledDeck.slice(26))
+  const deckA = useQueue(shuffledDeck.slice(0, 26))
+  const deckB = useQueue(shuffledDeck.slice(26))
   const mistakePile = useQueue([])
   const pile = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
@@ -22,11 +22,16 @@ export default function App() {
   const [pileWinner, setPileWinner] = useState("")
   const [mistakeMaker, setMistakeMaker] = useState("")
   const [gameOver, setGameOver] = useState(false)
-
+  
   console.log("Deck A:", deckA.queue)
   console.log("Deck B:", deckB.queue)
   console.log({mistakePile})
   console.log({pile})
+  console.log({gameOver})
+
+  useEffect(() => {
+    if (deckB.queue.length === 0 || deckA.queue.length === 0) setGameOver(true)
+  }, [deckA, deckB])
 
   const flipCard = (e) => {
     e.preventDefault()
@@ -36,10 +41,8 @@ export default function App() {
     // move top card from current turn's player's deck to pile
     if (playerATurn) {
       pile.enqueue(deckA.dequeue())
-      // check if deck is empty
     } else {
       pile.enqueue(deckB.dequeue())
-      // check if deck is empty
     }
     
     // change player turn
@@ -102,11 +105,14 @@ export default function App() {
       // move all cards in pile to slapper's deck
       if (isSlapperA) {
         deckA.enqueueAll(pile.queue)
+        deckA.enqueueAll(mistakePile.queue)
       } else {
         deckB.enqueueAll(pile.queue)
+        deckB.enqueueAll(mistakePile.queue)
       }
       
       pile.emptyQueue()
+      mistakePile.emptyQueue()
       setPileWinner("")
     }, 1000)  
   }
@@ -127,10 +133,27 @@ export default function App() {
     setTimeout(() => setMistakeMaker(""), 1000)
   }
 
+  const restart = () => {
+    setGameOver(false)
+    setShuffledDeck(getShuffledDeck())
+    deckA.emptyQueue()
+    deckB.emptyQueue()
+    deckA.enqueueAll(shuffledDeck.slice(0, 26))
+    deckB.enqueueAll(shuffledDeck.slice(26))
+    pile.emptyQueue()
+    mistakePile.emptyQueue()
+  }
+
   return (
     <div className="App">
-      <div className="board">
+      {gameOver && <div className="results">
+        <h1>Game over</h1>
+        <p>Winner is {playerATurn ? "player A" : "player B"}</p>
+        <button onClick={restart}>Restart</button>
+      </div>}
 
+      {!gameOver && <div className="board">
+  
         <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
 
         <div className="deck">
@@ -149,12 +172,15 @@ export default function App() {
         <div className="deck">
           {mistakePile.queue.length > 0 && <FlippedCard deckName="mistake" deckSize={mistakePile.queue.length}/>}
         </div>
-      </div>
+      
 
       <button onClick={flipCard}>Flip card</button>
-        <button onClick={() => slapPile(true)}>Player A slap</button>
-        <button onClick={() => slapPile(false)}>Player B slap</button>
-        
+      <button onClick={() => slapPile(true)}>Player A slap</button>
+      <button onClick={() => slapPile(false)}>Player B slap</button>
+      
+      </div>
+
+          }
     </div>
   )
 }
