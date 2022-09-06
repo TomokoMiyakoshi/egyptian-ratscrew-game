@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import "./App.css"
 import Card from "./components/Card";
 import FlippedCard from "./components/FlippedCard";
@@ -22,32 +22,53 @@ export default function App() {
   const [pileWinner, setPileWinner] = useState("")
   const [mistakeMaker, setMistakeMaker] = useState("")
   const [gameOver, setGameOver] = useState(false)
-  
-  console.log("Deck A:", deckA.queue)
-  console.log("Deck B:", deckB.queue)
-  console.log({mistakePile})
-  console.log({pile})
-  console.log({gameOver})
+
+  // console.log("Deck A:", deckA.queue)
+  // console.log("Deck B:", deckB.queue)
+  // console.log({mistakePile})
+  // console.log({pile})
+  // console.log({gameOver})
+  // console.log({playerATurn})
 
   useEffect(() => {
     if (deckB.queue.length === 0 || deckA.queue.length === 0) setGameOver(true)
   }, [deckA, deckB])
 
-  const flipCard = (e) => {
-    e.preventDefault()
+  useEffect(() => {
+    console.log("turn changed:", playerATurn)
+  }, [playerATurn])
+
+  useEffect(() => {
+    document.addEventListener("keyup", handleKeyDown)
+    return () => document.removeEventListener("keyup", handleKeyDown);
+  }, [playerATurn])
+
+
+  const handleKeyDown = e => {
+      if ((e.key === "a" && playerATurn) || (e.key === "k" && !playerATurn)) {
+        console.log("flipping")
+        flipCard()
+         // change player turn
+         setPlayerATurn(playerATurn => !playerATurn)
+      } else if (e.key === "s") {
+        slapPile(true)
+      } else if (e.key === "l") {
+        slapPile(false)
+      }
+  }
+
+  const flipCard = () => {
 
     console.log(playerATurn ? "Player A" : "Player B", "flipping")
     
     // move top card from current turn's player's deck to pile
     if (playerATurn) {
-      pile.enqueue(deckA.dequeue())
+      const deq = deckA.dequeue()
+      console.log({deq})
+      pile.enqueue(deq)
     } else {
       pile.enqueue(deckB.dequeue())
     }
-    
-    // change player turn
-    setPlayerATurn(playerATurn => !playerATurn)
-
     setCanSlap(true)
   }
 
