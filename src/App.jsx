@@ -180,29 +180,37 @@ export default function App() {
 
       {!gameOver && <div className="board">
   
+        <div className="pile-text">
         <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
+        <p>{`${pile.queue.length} cards to be won`}</p>
+        </div>
+        
 
-        <div className="deck">
-          <FlippedCard deckName="A" mistakeMaker={mistakeMaker} deckSize={deckA.queue.length}/>
+        <div className="deck deck-a">
+          <FlippedCard deckName="A" mistakeMaker={mistakeMaker}/>
         </div>
 
-        <div className="deck">
+        <p className="score-a">{`${deckA.queue.length} left`}</p>
+
+        <div className="deck pile">
           {pile.queue.length > 0 && !gameOver && 
             <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner} deckSize={pile.queue.length} />}
         </div>
         
-        <div className="deck">
+        <div className="deck deck-b">
           <FlippedCard deckName="B" mistakeMaker={mistakeMaker} deckSize={deckB.queue.length}/>
         </div>
+
+        <p className="score-b">{`${deckB.queue.length} left`}</p>
         
-        <div className="deck">
+        <div className="deck mistake-pile">
           {mistakePile.queue.length > 0 && <FlippedCard deckName="mistake" deckSize={mistakePile.queue.length}/>}
         </div>
       
 
-      <button onClick={flipCard}>Flip card</button>
+      {/* <button onClick={flipCard}>Flip card</button>
       <button onClick={() => slapPile(true)}>Player A slap</button>
-      <button onClick={() => slapPile(false)}>Player B slap</button>
+      <button onClick={() => slapPile(false)}>Player B slap</button> */}
       
       </div>
 

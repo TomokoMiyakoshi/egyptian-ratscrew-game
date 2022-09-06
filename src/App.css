@@ -1,0 +1,78 @@
+#root, .App {
+    width: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+    --small-ft: 16px;
+    --medium-ft: 20px;
+    --large-ft: 30px;
+}
+  
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.board {
+    background: #f9f9f7;
+    overflow: hidden;
+    padding: 1.5em;
+    height: min(100vh, 550px);
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    align-content: space-between;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 115px);
+    grid-template-areas: ". a score-a"
+                        "mistake pile pile-text"
+                        ". b score-b";
+    font-size: var(--small-ft)
+}
+
+
+.deck {
+    border: 1px solid black;
+    font-size: var(--large-ft);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 115px;
+}
+
+.deck-a {
+    grid-area: a;
+}
+
+.deck-b {
+    grid-area: b;
+}
+
+.pile {
+    grid-area: pile;
+}
+
+.mistake-pile {
+    grid-area: mistake;
+}
+
+.score-a {
+    grid-area: score-a;
+}
+
+.score-b {
+    grid-area: score-b;
+}
+
+.pile-text {
+    grid-area: pile-text;
+    text-align: center;
+}
+
+.pile-text > p:first-child {
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    font-size: var(--medium-ft);
+}
