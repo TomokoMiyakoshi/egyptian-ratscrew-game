@@ -19,6 +19,7 @@ export default function App() {
   const pile = useQueue([])
   const [playerATurn, setPlayerATurn] = useState(true)
   const [canSlap, setCanSlap] = useState(true)
+  const [canFlip, setCanFlip] = useState(true)
   const [pileWinner, setPileWinner] = useState("")
   const [mistakeMaker, setMistakeMaker] = useState("")
   const [gameOver, setGameOver] = useState(false)
@@ -35,30 +36,27 @@ export default function App() {
   }, [deckA, deckB])
 
   useEffect(() => {
-    console.log("turn changed:", playerATurn)
-  }, [playerATurn])
-
-  useEffect(() => {
     document.addEventListener("keyup", handleKeyDown)
     return () => document.removeEventListener("keyup", handleKeyDown);
-  }, [playerATurn])
+  }, [playerATurn, canFlip])
 
 
   const handleKeyDown = e => {
-      if ((e.key === "a" && playerATurn) || (e.key === "k" && !playerATurn)) {
-        console.log("flipping")
-        flipCard()
-         // change player turn
-         setPlayerATurn(playerATurn => !playerATurn)
-      } else if (e.key === "s") {
-        slapPile(true)
-      } else if (e.key === "l") {
-        slapPile(false)
-      }
+    // canFlip is false when slap in progress
+    if (!canFlip) return
+    if ((e.key === "a" && playerATurn) || (e.key === "k" && !playerATurn)) {
+      console.log("flipping")
+      flipCard()
+        // change player turn
+        setPlayerATurn(playerATurn => !playerATurn)
+    } else if (e.key === "s") {
+      slapPile(true)
+    } else if (e.key === "l") {
+      slapPile(false)
+    }
   }
 
   const flipCard = () => {
-
     console.log(playerATurn ? "Player A" : "Player B", "flipping")
     
     // move top card from current turn's player's deck to pile
@@ -73,9 +71,10 @@ export default function App() {
   }
 
   const slapPile = (isSlapperA) => {
-    if (!canSlap) {
-      return
-    }
+    if (!canSlap)return
+
+    // prevent players from flipping cards while displaying result of slap
+    setCanFlip(false)
 
     console.log("Pile slapped by", isSlapperA ? "player A" : "player B")
 
@@ -92,7 +91,9 @@ export default function App() {
       punishPlayer(isSlapperA)
     }
 
+    // prevent same or other player from slapping pile again before new card is flipped to pile
     setCanSlap(false)
+  
   }
 
 
@@ -135,6 +136,7 @@ export default function App() {
       pile.emptyQueue()
       mistakePile.emptyQueue()
       setPileWinner("")
+      setCanFlip(true)
     }, 1000)  
   }
 
@@ -151,7 +153,10 @@ export default function App() {
     }
     
     // unhighlight mistake maker's deck
-    setTimeout(() => setMistakeMaker(""), 1000)
+    setTimeout(() => {
+      setMistakeMaker("")
+      setCanFlip(true)
+    }, 1000)
   }
 
   const restart = () => {
