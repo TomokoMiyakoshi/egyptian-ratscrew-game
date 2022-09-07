@@ -1,10 +1,22 @@
 #root, .App {
     width: 100%;
-    max-height: 100vh;
-    overflow: hidden;
+}
+
+#root {
     --small-ft: 16px;
     --medium-ft: 20px;
     --large-ft: 30px;
+    --card-width: 70px;
+    --card-height: 107px;
+    --wrong-color: #FF5757;
+    --player-a-color: #3B7C5A;
+    --player-b-color: #353380;
+}
+
+body {
+    align-items: center;
+    align-content: center;
+    background: #f9f9f7;
 }
   
 * {
@@ -13,51 +25,77 @@
 }
 
 .board {
-    background: #f9f9f7;
-    overflow: hidden;
     padding: 1.5em;
-    height: min(100vh, 550px);
-    max-width: 1000px;
-    margin: 0 auto;
+    box-sizing: content-box;
+    max-width: 800px;
+    margin: auto auto;
     display: grid;
+    row-gap:  calc(var(--card-height)/2);
+    column-gap: calc(var(--card-width)*2/5);
+    
     justify-items: center;
     align-items: center;
+    justify-content: center;
     align-content: space-between;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 115px);
+    grid-template-rows: repeat(3, var(--card-height));
     grid-template-areas: ". a score-a"
                         "mistake pile pile-text"
                         ". b score-b";
-    font-size: var(--small-ft)
+    font-size: var(--small-ft);
 }
-
 
 .deck {
     border: 1px solid black;
+    border-radius: 5px;
     font-size: var(--large-ft);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 75px;
-    height: 115px;
+    width: var(--card-width);
+    height: var(--card-height);
 }
 
-.deck-a {
+.deck.empty {
+    border-style: dashed;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.deck.a {
     grid-area: a;
 }
 
-.deck-b {
+.deck.b {
     grid-area: b;
 }
 
-.pile {
+.deck.pile {
     grid-area: pile;
 }
 
-.mistake-pile {
+.deck.mistake {
     grid-area: mistake;
 }
 
+.deck.wrong {
+    border: 4px solid var(--wrong-color);
+}
+
+.deck.winner-a {
+    border: 4px solid var(--player-a-color);
+}
+
+.deck.winner-b {
+    border: 4px solid var(--player-b-color);
+}
 .score-a {
     grid-area: score-a;
 }
@@ -69,10 +107,43 @@
 .pile-text {
     grid-area: pile-text;
     text-align: center;
+    line-height: 1.2;
 }
 
 .pile-text > p:first-child {
     margin-bottom: 0.5em;
-    font-weight: bold;
+    font-weight: medium;
     font-size: var(--medium-ft);
 }
+
+
+@media (min-width: 700px){
+    #root {
+        --small-ft: 20px;
+        --medium-ft: 25px;
+    }
+}
+
+@media (min-width: 700px) and (min-height: 672px ) {
+    #root {
+        --card-width: 100px;
+        --card-height: 153px;
+        --large-ft: 40px;
+    }
+}
+
+@media (min-width: 1000px) {
+    #root {
+        --small-ft: 25px;
+        --medium-ft: 30px;
+    }
+}
+
+@media (min-width: 1000px) and (min-height: 779px ) {
+    #root {
+        --large-ft: 45px;
+        --card-width: 115px;
+        --card-height: 176px;
+    }
+}
+

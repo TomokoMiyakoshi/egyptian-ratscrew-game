@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react"
 import "./App.css"
 import Card from "./components/Card";
 import FlippedCard from "./components/FlippedCard";
+import Deck from "./components/Deck"
 import {getShuffledDeck} from "./utils.jsx";
 import useQueue from "./hooks/useQueue.js"
 
@@ -25,9 +26,9 @@ export default function App() {
   const [gameOver, setGameOver] = useState(false)
 
   // console.log("Deck A:", deckA.queue)
-  // console.log("Deck B:", deckB.queue)
+  console.log("Deck B:", deckB.queue)
   // console.log({mistakePile})
-  // console.log({pile})
+  console.log({pile})
   // console.log({gameOver})
   // console.log({playerATurn})
 
@@ -67,6 +68,7 @@ export default function App() {
     } else {
       pile.enqueue(deckB.dequeue())
     }
+    cardsToBeWon.current = cardsToBeWon.current + 1
     setCanSlap(true)
   }
 
@@ -135,6 +137,7 @@ export default function App() {
       
       pile.emptyQueue()
       mistakePile.emptyQueue()
+      cardsToBeWon.current = 0
       setPileWinner("")
       setCanFlip(true)
     }, 1000)  
@@ -151,6 +154,8 @@ export default function App() {
       setMistakeMaker("B")
       mistakePile.enqueue(deckB.dequeue())
     }
+
+    cardsToBeWon.current = cardsToBeWon.current + 1
     
     // unhighlight mistake maker's deck
     setTimeout(() => {
@@ -170,6 +175,9 @@ export default function App() {
     mistakePile.emptyQueue()
   }
 
+  const cardsToBeWon = useRef(0)
+
+
   return (
     <div className="App">
       {gameOver && <div className="results">
@@ -182,36 +190,18 @@ export default function App() {
   
         <div className="pile-text">
         <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
-        <p>{`${pile.queue.length} cards to be won`}</p>
+        <p>{`${cardsToBeWon.current} ${cardsToBeWon.current === 1 ? "card" : "cards"} to be won`}</p>
         </div>
+
+        <Deck deckName="a" deckSize={deckA.queue.length} mistake={"A" === mistakeMaker} pileWinner={"A" == pileWinner && pileWinner}></Deck>
+        <Deck deckName="b" deckSize={deckB.queue.length} mistake={"B" === mistakeMaker} pileWinner={"B" == pileWinner && pileWinner}></Deck> 
+        <Deck deckName="pile" topCardVal={pile.back && pile.back.value} pileWinner={pileWinner} deckSize={pile.queue.length}></Deck>
+        <Deck deckName="mistake" deckSize={mistakePile.queue.length} mistake={mistakeMaker}></Deck>
         
-
-        <div className="deck deck-a">
-          <FlippedCard deckName="A" mistakeMaker={mistakeMaker}/>
-        </div>
-
         <p className="score-a">{`${deckA.queue.length} left`}</p>
-
-        <div className="deck pile">
-          {pile.queue.length > 0 && !gameOver && 
-            <Card key={pile.back.id} value={pile.back.value} pileWinner={pileWinner} deckSize={pile.queue.length} />}
-        </div>
-        
-        <div className="deck deck-b">
-          <FlippedCard deckName="B" mistakeMaker={mistakeMaker} deckSize={deckB.queue.length}/>
-        </div>
-
         <p className="score-b">{`${deckB.queue.length} left`}</p>
         
-        <div className="deck mistake-pile">
-          {mistakePile.queue.length > 0 && <FlippedCard deckName="mistake" deckSize={mistakePile.queue.length}/>}
-        </div>
-      
-
-      {/* <button onClick={flipCard}>Flip card</button>
-      <button onClick={() => slapPile(true)}>Player A slap</button>
-      <button onClick={() => slapPile(false)}>Player B slap</button> */}
-      
+    
       </div>
 
           }
