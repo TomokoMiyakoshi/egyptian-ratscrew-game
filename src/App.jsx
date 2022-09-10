@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react"
 import "./App.css"
-import Card from "./components/Card";
-import FlippedCard from "./components/FlippedCard";
 import Deck from "./components/Deck"
-import {getShuffledDeck} from "./utils.jsx";
+import IntroContainer from "./components/IntroContainer"
+import EndContainer from "./components/EndContainer"
+import {getShuffledDeck} from "./utils.jsx"
 import useQueue from "./hooks/useQueue.js"
 
 export default function App() {
@@ -24,6 +24,13 @@ export default function App() {
   const [pileWinner, setPileWinner] = useState("")
   const [mistakeMaker, setMistakeMaker] = useState("")
   const [gameOver, setGameOver] = useState(false)
+  const [playing, setPlaying] = useState(false)
+
+  // stores player names when form in intro component is submitted
+  const [playerNames, setplayerNames] = useState({
+    player1: "", 
+    player2: ""
+  })
 
   // console.log("Deck A:", deckA.queue)
   console.log("Deck B:", deckB.queue)
@@ -33,7 +40,10 @@ export default function App() {
   // console.log({playerATurn})
 
   useEffect(() => {
-    if (deckB.queue.length === 0 || deckA.queue.length === 0) setGameOver(true)
+    if (deckB.queue.length === 0 || deckA.queue.length === 0) {
+      setGameOver(true)
+      setPlaying(false)
+    }
   }, [deckA, deckB])
 
   useEffect(() => {
@@ -43,8 +53,11 @@ export default function App() {
 
 
   const handleKeyDown = e => {
+    console.log(e.key)
+    console.log(canFlip)
     // canFlip is false when slap in progress
     if (!canFlip) return
+    
     if ((e.key === "a" && playerATurn) || (e.key === "k" && !playerATurn)) {
       console.log("flipping")
       flipCard()
@@ -164,7 +177,7 @@ export default function App() {
     }, 1000)
   }
 
-  const restart = () => {
+  const resetState = () => {
     setGameOver(false)
     setShuffledDeck(getShuffledDeck())
     deckA.emptyQueue()
@@ -174,22 +187,31 @@ export default function App() {
     pile.emptyQueue()
     mistakePile.emptyQueue()
   }
+  const restart = () => {
+    resetState()
+    setPlaying(true)
+  }
 
   const cardsToBeWon = useRef(0)
-
+  
+  const exitGame = () => {
+    // shown confirm dialog
+    resetState()
+    setPlaying(false)
+  }
 
   return (
     <div className="App">
-      {gameOver && <div className="results">
-        <h1>Game over</h1>
-        <p>Winner is {playerATurn ? "player A" : "player B"}</p>
-        <button onClick={restart}>Restart</button>
-      </div>}
 
-      {!gameOver && <div className="board">
+      {!playing && !gameOver && <IntroContainer setplayerNames={setplayerNames} setPlaying={setPlaying}/>}
+        
+      {gameOver && <EndContainer restart={restart} exitGame={exitGame}/>}
+
+      {playing && <div className="board">
   
+        <button className="exit" onClick={exitGame}>Exit game</button>
         <div className="pile-text">
-        <p>{playerATurn? "Player A's turn" : "Player B's turn"}</p>
+        <p>{playerATurn? `${playerNames.player1}'s turn` : `${playerNames.player2}'s turn`}</p>
         <p>{`${cardsToBeWon.current} ${cardsToBeWon.current === 1 ? "card" : "cards"} to be won`}</p>
         </div>
 

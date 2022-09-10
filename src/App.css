@@ -1,8 +1,14 @@
-#root, .App {
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+:root, .App {
     width: 100%;
 }
 
-#root {
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     --small-ft: 16px;
     --medium-ft: 20px;
     --large-ft: 30px;
@@ -17,11 +23,7 @@ body {
     align-items: center;
     align-content: center;
     background: #f9f9f7;
-}
-  
-* {
-    box-sizing: border-box;
-    margin: 0;
+    min-height: 100vh;
 }
 
 .board {
@@ -39,7 +41,7 @@ body {
     align-content: space-between;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, var(--card-height));
-    grid-template-areas: ". a score-a"
+    grid-template-areas: "exit a score-a"
                         "mistake pile pile-text"
                         ". b score-b";
     font-size: var(--small-ft);
@@ -67,7 +69,6 @@ body {
     align-items: center;
     justify-content: center;
 }
-
 
 .deck.a {
     grid-area: a;
@@ -114,6 +115,10 @@ body {
     margin-bottom: 0.5em;
     font-weight: medium;
     font-size: var(--medium-ft);
+}
+
+.exit {
+    grid-area: exit;
 }
 
 
