@@ -208,14 +208,14 @@ export default function App() {
 
       {playing && <div className="board">
   
-        <button className="exit" onClick={exitGame}>Exit game</button>
+        <button className="exit" onClick={exitGame}>Exit</button>
         <div className="pile-text">
         <p>{playerATurn? `${playerNames.player1}'s turn` : `${playerNames.player2}'s turn`}</p>
         <p>{`${cardsToBeWon.current} ${cardsToBeWon.current === 1 ? "card" : "cards"} to be won`}</p>
         </div>
 
-        <Deck deckName="a" deckSize={deckA.queue.length} mistake={"A" === mistakeMaker} pileWinner={"A" == pileWinner && pileWinner}></Deck>
-        <Deck deckName="b" deckSize={deckB.queue.length} mistake={"B" === mistakeMaker} pileWinner={"B" == pileWinner && pileWinner}></Deck> 
+        <Deck playerName={playerNames.player1} deckName="a" deckSize={deckA.queue.length} mistake={"A" === mistakeMaker} pileWinner={"A" == pileWinner && pileWinner}></Deck>
+        <Deck playerName={playerNames.player2} deckName="b" deckSize={deckB.queue.length} mistake={"B" === mistakeMaker} pileWinner={"B" == pileWinner && pileWinner}></Deck> 
         <Deck deckName="pile" topCardVal={pile.back && pile.back.value} pileWinner={pileWinner} deckSize={pile.queue.length}></Deck>
         <Deck deckName="mistake" deckSize={mistakePile.queue.length} mistake={mistakeMaker}></Deck>
         

@@ -25,7 +25,7 @@ export default (props) => {
     // store names in state
     props.setplayerNames({
       player1: namesFormData.player1 || "Player 1",
-      player2: namesFormData.player1 || "Player 2",
+      player2: namesFormData.player2 || "Player 2",
     })
 
      // reset forms data state
@@ -41,16 +41,18 @@ export default (props) => {
     return (
         <div className="intro-container">
             <h1>Egyptian Ratslap</h1>
-            {!showRules && <button onClick={() => setShowRules(true)}>Show game rules</button>}
+            {!showRules && <button onClick={() => setShowRules(true)}>Show rules</button>}
             {showRules && <p className="rules">{rules.current}</p>}
             <p>Player 1:<br/>press <b>a</b> to flip card<br/>press <b>s</b> to slap pile</p>
             <p>Player 2:<br/>press <b>k</b> to flip card<br/>press <b>l</b> to slap pile</p>
             <form>
             <p>Enter your names:</p>
-            <div><input type="text" name="player1" placeholder="player 1" value={namesFormData.player1} onChange={handleFormChange}/>
-            <input type="text" name="player2" placeholder="player 2" value={namesFormData.player2} onChange={handleFormChange}/></div>
+            <div>
+              <input type="text" name="player1" placeholder="player 1" value={namesFormData.player1} onChange={handleFormChange} maxLength="8"/>
+              <input type="text" name="player2" placeholder="player 2" value={namesFormData.player2} onChange={handleFormChange} maxLength="8"/>
+            </div>
             
-            <button onClick={handleFormSubmit}>Start game</button>
+            <button onClick={handleFormSubmit}>Start</button>
             </form>
         </div>
     )
