@@ -12,8 +12,7 @@ export default function App() {
   // const testDeckB = [{id:5, value:2},{id:6, value:6},{id:7, value:6},{id:8, value:1}]
   // const deckA = useQueue(testDeckA)
   // const deckB = useQueue(testDeckB)
-  const testMistake = [{id:1, value:4},{id:2, value:3},{id:3, value:2},{id:4, value:1}]
-  // const mistakePile = useQueue(testMistake)
+  
   const deckA = useQueue(shuffledDeck.slice(0, 26))
   const deckB = useQueue(shuffledDeck.slice(26))
   const mistakePile = useQueue([])
@@ -204,7 +203,7 @@ export default function App() {
 
       {!playing && !gameOver && <IntroContainer setplayerNames={setplayerNames} setPlaying={setPlaying}/>}
         
-      {gameOver && <EndContainer restart={restart} exitGame={exitGame}/>}
+      {gameOver && <EndContainer restart={restart} exitGame={exitGame} playerNames={playerNames}/>}
 
       {playing && <div className="board">
   

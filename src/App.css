@@ -2,15 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-}
-
-button, input {
-    font-size: calc(var(--small-ft)*0.9);
-}
-
-button {
-    padding: 0.2em 1em;
-    
+    font-size: var(--small-ft);
 }
 
 :root {
@@ -28,38 +20,49 @@ button {
 
 #root {
     width: 100%;
-    min-height: 100vh;
     white-space: pre-wrap;
 }
 
 body {
-    /* align-items: center;
-    align-content: center; */
     background: #f9f9f7;
     min-height: 100vh;
-    padding: 1.2em;
-    font-size: var(--small-ft);
-}
-
-.intro-container {
+    padding: 1.5em 1.2em;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 12px;
-    gap: 1em;
-    text-align: center;
 }
 
-.intro-container h1 {
+button {
+    padding: 0.2em 1em;
+    border-radius: 5px;
+}
+
+input, button {
+    font-size: 0.9em;
+}
+
+h1 {
     font-size: var(--large-ft);
 }
 
+/* intro and end page */
+
+.intro-container, .end-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2em;
+    text-align: center;
+    min-height: 100vh;
+    padding-top: 1em;
+}
+
+
 .intro-container input {
     width: 8ch;
-    padding: 0.1em 0.4em;
+    padding: 0.05em 0.25em;
     box-sizing: content-box;
     margin-bottom: 1.5em;
-    margin-top:0.51em;
+    margin-top: 0.5em;
 }
 
 .intro-container input:first-of-type {
@@ -74,7 +77,14 @@ body {
     max-width: 65ch;
 }
 
+.end-container button:first-of-type {
+    margin-right: 2em;
+}
+
+/* game page */
+
 .board {
+    align-self: center;
     box-sizing: content-box;
     max-width: 800px;
     margin: auto auto;
@@ -91,7 +101,6 @@ body {
     grid-template-areas: "exit a score-a"
                         "mistake pile pile-text"
                         ". b score-b";
-    font-size: var(--small-ft);
 }
 
 .deck {
@@ -174,6 +183,8 @@ body {
 }
 
 
+/* media queries */
+
 @media (min-width: 700px){
     #root {
         --small-ft: 20px;
@@ -187,6 +198,10 @@ body {
         --card-height: 153px;
         --card-ft: 17px;
         --large-ft: 40px;
+    }
+
+    .intro-container {
+        padding-top: 1.5em;
     }
 }
 

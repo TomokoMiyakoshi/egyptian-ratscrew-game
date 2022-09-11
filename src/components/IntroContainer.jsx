@@ -16,13 +16,17 @@ export default (props) => {
   const handleFormChange = (e) => {
     setNamesFormData({
       ...namesFormData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value.trim()
     })
   }
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
-    // store names in state
+
+    // check that the two names are unique
+    if (namesFormData.player1.toLowerCase() === namesFormData.player2.toLowerCase()) return
+
+    // store names in state, or default if form left unfilled
     props.setplayerNames({
       player1: namesFormData.player1 || "Player 1",
       player2: namesFormData.player2 || "Player 2",
@@ -40,7 +44,7 @@ export default (props) => {
 
     return (
         <div className="intro-container">
-            <h1>Egyptian Ratslap</h1>
+            <h1>Egyptian Ratscrew</h1>
             {!showRules && <button onClick={() => setShowRules(true)}>Show rules</button>}
             {showRules && <p className="rules">{rules.current}</p>}
             <p>Player 1:<br/>press <b>a</b> to flip card<br/>press <b>s</b> to slap pile</p>
