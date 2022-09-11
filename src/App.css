@@ -3,10 +3,6 @@
     margin: 0;
 }
 
-:root, .App {
-    width: 100%;
-}
-
 :root {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     --small-ft: 16px;
@@ -19,15 +15,56 @@
     --player-b-color: #353380;
 }
 
+#root {
+    width: 100%;
+    min-height: 100vh;
+    white-space: pre-wrap;
+}
+
+
+
 body {
-    align-items: center;
-    align-content: center;
+    /* align-items: center;
+    align-content: center; */
     background: #f9f9f7;
     min-height: 100vh;
+    padding: 1.2em;
+}
+
+.intro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+}
+
+.intro-container {
+    gap: 1em;
+    text-align: center;
+}
+
+.intro-container input {
+    width: 8ch;
+    padding: 0.1em 0.4em;
+    box-sizing: content-box;
+    margin-bottom: 1.5em;
+    margin-top:0.51em;
+}
+
+.intro-container input:first-of-type {
+    margin-right: 1em;
+}
+
+.intro-container button {
+    width: fit-content;
+}
+
+.rules {
+    max-width: 65ch;
+    font-size: 14px;
 }
 
 .board {
-    padding: 1.5em;
     box-sizing: content-box;
     max-width: 800px;
     margin: auto auto;

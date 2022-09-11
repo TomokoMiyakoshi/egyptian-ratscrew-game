@@ -47,19 +47,18 @@ export default function App() {
   }, [deckA, deckB])
 
   useEffect(() => {
-    document.addEventListener("keyup", handleKeyDown)
-    return () => document.removeEventListener("keyup", handleKeyDown);
-  }, [playerATurn, canFlip])
+    if (playing) {
+      document.addEventListener("keydown", handleKeyDown)
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [playing, playerATurn, canFlip])
 
 
   const handleKeyDown = e => {
-    console.log(e.key)
-    console.log(canFlip)
     // canFlip is false when slap in progress
     if (!canFlip) return
     
     if ((e.key === "a" && playerATurn) || (e.key === "k" && !playerATurn)) {
-      console.log("flipping")
       flipCard()
         // change player turn
         setPlayerATurn(playerATurn => !playerATurn)
