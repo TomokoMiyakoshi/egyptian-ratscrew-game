@@ -89,8 +89,6 @@ export default function App() {
     // prevent players from flipping cards while displaying result of slap
     setCanFlip(false)
 
-    console.log("Pile slapped by", isSlapperA ? "player A" : "player B")
-
     if (isValidSlap()) {
       console.log("reward player")
 
@@ -99,8 +97,6 @@ export default function App() {
       setPlayerATurn(isSlapperA? true : false)
       
     } else {
-      console.log("punish player")
-
       punishPlayer(isSlapperA)
     }
 
@@ -200,7 +196,6 @@ export default function App() {
 
   return (
     <div className="App">
-
       {!playing && !gameOver && <IntroContainer setplayerNames={setplayerNames} setPlaying={setPlaying}/>}
         
       {gameOver && <EndContainer restart={restart} exitGame={exitGame} playerNames={playerNames}/>}

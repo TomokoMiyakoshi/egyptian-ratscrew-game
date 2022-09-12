@@ -3,18 +3,20 @@
     margin: 0;
     font-family: Inter, sans-serif;
     font-size: var(--small-ft);
+    font-family: 'Jacques Francois', serif;
+    color: #322D31;
 }
 
 :root {
-    --card-ft: 14px;
+    --card-ft: 12px;
     --small-ft: 14px;
     --medium-ft: 18px;
     --large-ft: 30px;
     --card-width: 70px;
     --card-height: 107px;
-    --wrong-color: #FF5757;
-    --player-a-color: #3B7C5A;
-    --player-b-color: #353380;
+    --wrong-color: #e66666;
+    --player-a-color: #8dbba3;
+    --player-b-color: #3e39c891;
 }
 
 #root {
@@ -31,16 +33,24 @@ body {
 }
 
 button {
-    padding: 0.2em 1em;
+    padding: 0.4em 0.7em;
     border-radius: 5px;
+    background-color: #8dbba3;
+    color: white;
+    border: none;
+    font-family: 'Cinzel Decorative', cursive;
+    font-weight: 700;
+    
 }
 
 input, button {
-    font-size: 0.9em;
+    font-size: 0.8em;
 }
 
 h1 {
     font-size: var(--large-ft);
+    font-family: 'Cinzel Decorative', cursive;
+    font-family: 'Jacques Francois', serif;
 }
 
 /* intro and end page */
@@ -53,6 +63,7 @@ h1 {
     text-align: center;
     min-height: 100vh;
     padding-top: 1em;
+    font-family: 'Cinzel Decorative', cursive;
 }
 
 
@@ -105,7 +116,6 @@ h1 {
 .deck {
     border: 1px solid black;
     border-radius: 5px;
-    font-size: var(--card-ft);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,16 +123,12 @@ h1 {
     height: var(--card-height);
 }
 
-.deck.empty {
-    border-style: dashed;
+.deck > p {
+    font-size: var(--card-ft);
 }
 
-.card {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.deck.empty {
+    border-style: dashed;
 }
 
 .deck.a {
@@ -135,7 +141,11 @@ h1 {
 
 .deck.pile {
     grid-area: pile;
+}
+
+.deck.pile > p {
     font-size: var(--large-ft);
+    font-family: 'Cinzel Decorative', cursive;
 }
 
 .deck.mistake {
@@ -184,10 +194,12 @@ h1 {
 
 /* media queries */
 
-@media (min-width: 700px){
+@media (min-width: 700px) {
     #root {
         --small-ft: 20px;
         --medium-ft: 24px;
+        --card-width: 80px;
+        --card-height: 122px;
     }
 }
 

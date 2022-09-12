@@ -1,6 +1,6 @@
 import {useState, useRef} from "react"
-import { useRenderCount } from "rooks"
 import AlertDialog from "./AlertDialog"
+
 export default (props) => {
   
   const [showRules, setShowRules] = useState(false)
@@ -51,25 +51,23 @@ export default (props) => {
 
   }
 
-
-    return (
-        <div className="intro-container">
-            <h1>Egyptian Ratscrew</h1>
-            {!showRules && <button onClick={() => setShowRules(true)}>Show rules</button>}
-            {showRules && <p className="rules">{rules.current}</p>}
-            <p>Player 1:<br/>press <b>a</b> to flip card<br/>press <b>s</b> to slap pile</p>
-            <p>Player 2:<br/>press <b>k</b> to flip card<br/>press <b>l</b> to slap pile</p>
-            <form>
-            <p>Enter your names:</p>
-            <div>
-              <input ref={nameInput1} autoFocus type="text" name="player1" placeholder="player 1" value={namesFormData.player1} onChange={handleFormChange} maxLength="8"/>
-              <input type="text" name="player2" placeholder="player 2" value={namesFormData.player2} onChange={handleFormChange} maxLength="8"/>
-            </div>
-            
-            <button onClick={handleFormSubmit}>Start</button>
-
-           {showError &&  <AlertDialog setShowDialog={setShowError} message={errorMessage}/>}
-            </form>
-        </div>
+  return (
+      <div className="intro-container">
+          <h1>Egyptian Ratscrew</h1>
+          {!showRules && <button onClick={() => setShowRules(true)}>Show rules</button>}
+          {showRules && <p className="rules">{rules.current}</p>}
+          <p>Player 1:<br/>press <b>a</b> to flip card<br/>press <b>s</b> to slap pile</p>
+          <p>Player 2:<br/>press <b>k</b> to flip card<br/>press <b>l</b> to slap pile</p>
+          <form>
+          <p>Enter your names:</p>
+          <div>
+            <input ref={nameInput1} autoFocus type="text" name="player1" placeholder="player 1" value={namesFormData.player1} onChange={handleFormChange} maxLength="8"/>
+            <input type="text" name="player2" placeholder="player 2" value={namesFormData.player2} onChange={handleFormChange} maxLength="8"/>
+          </div>
+          
+          <button onClick={handleFormSubmit}>Start</button>
+          {showError &&  <AlertDialog setShowDialog={setShowError} message={errorMessage}/>}
+          </form>
+      </div>
     )
 }
