@@ -13,7 +13,7 @@
     --medium-ft: 18px;
     --large-ft: 30px;
     --card-width: 70px;
-    --card-height: 107px;
+    --card-height: calc(var(--card-width)*1.5);
     --wrong-color: #e66666;
     --player-a-color: #8dbba3;
     --player-b-color: #3e39c891;
@@ -211,41 +211,78 @@ cite {
 
 /* media queries */
 
-@media (min-width: 700px) {
+@media (min-width: 500px) {
     #root {
+        --card-ft: 16px;
         --small-ft: 20px;
-        --medium-ft: 24px;
-        --card-width: 80px;
-        --card-height: 122px;
+        --medium-ft: 22px;
+        --card-width: 95px;
+        --card-height: calc(var(--card-width)*1.5);
+    }
+
+    .board {
+        row-gap:  calc(var(--card-height)/3);
+        column-gap: calc(var(--card-width)*2/5);
+        grid-template-rows: repeat(3, var(--card-height));
     }
 }
 
+
 @media (min-width: 700px) and (min-height: 672px ) {
     #root {
-        --card-width: 100px;
-        --card-height: 153px;
-        --card-ft: 17px;
-        --large-ft: 40px;
+
+        --card-ft: 20px;
+        --small-ft: 26px;
+        --medium-ft: 30px;
+        --large-ft: 36px;
+        --card-width: 115px;
+        --card-height: calc(var(--card-width)*1.5);
     }
 
     .intro-container {
         padding-top: 1.5em;
     }
+
+    * {
+        font-size: 20px;
+    }
+
+    .board {
+        row-gap:  calc(var(--card-height)/3);
+        column-gap: calc(var(--card-width)*2/5);
+        grid-template-rows: repeat(3, var(--card-height));
+    }
 }
 
 @media (min-width: 1000px) {
     #root {
-        --small-ft: 22px;
-        --medium-ft: 26px;
+        --small-ft: 28px;
+        /* --medium-ft: 34px; */
+        --large-ft: 38px;
+    }
+
+    * {
+        font-size: 20px;
+    }
+
+    .board {
+        row-gap:  calc(var(--card-height)/3);
+        column-gap: calc(var(--card-width)*2/5);
+        grid-template-rows: repeat(3, var(--card-height));
     }
 }
 
 @media (min-width: 1000px) and (min-height: 779px ) {
     #root {
-        --large-ft: 45px;
+        --large-ft: 40px;
         --card-width: 115px;
-        --card-height: 176px;
-        --card-ft: 18px;
+        --card-height: calc(var(--card-width)*1.5);
+    }
+
+    .board {
+        row-gap:  calc(var(--card-height)/3);
+        column-gap: calc(var(--card-width)*2/5);
+        grid-template-rows: repeat(3, var(--card-height));
     }
 }
 

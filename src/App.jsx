@@ -20,13 +20,8 @@ export default () => {
     })
  
     const [shuffledDeck, setShuffledDeck] = useState(getShuffledDeck())
-    const testDeckA = [{id:1, value:1},{id:2, value:3},{id:3, value:7},{id:4, value:3}]
-    const testDeckB = [{id:5, value:2},{id:6, value:2},{id:7, value:3},{id:8, value:1}]
-    const deckA = useQueue(testDeckA)
-    const deckB = useQueue(testDeckB)
-    
-    // const deckA = useQueue(shuffledDeck.slice(0, 26))
-    // const deckB = useQueue(shuffledDeck.slice(26))
+    const deckA = useQueue(shuffledDeck.slice(0, 26))
+    const deckB = useQueue(shuffledDeck.slice(26))
     const mistakePile = useQueue([])
     const pile = useQueue([])
     const [canSlap, setCanSlap] = useState(true)
