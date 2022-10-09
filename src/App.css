@@ -35,7 +35,9 @@ body {
 button {
     padding: 0.4em 0.7em;
     border-radius: 5px;
-    background-color: #8dbba3;
+    background-color: #B49D6E;
+    background-color: #c89c3ce0;
+    
     color: white;
     border: none;
     font-family: 'Cinzel Decorative', cursive;
@@ -89,6 +91,10 @@ h1 {
 
 .end-container button:first-of-type {
     margin-right: 2em;
+}
+
+cite {
+    font-size: 0.7rem;
 }
 
 /* game page */
@@ -178,12 +184,23 @@ h1 {
 .pile-text {
     grid-area: pile-text;
     text-align: center;
-    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0;
+    border-radius: 5px;
+    width: 20ch;
+}
+
+.pile-text.a {
+    border: 3px solid var(--player-a-color);
+}
+
+.pile-text.b {
+    border: 3px solid var(--player-b-color);
 }
 
 .pile-text > p:first-child {
     margin-bottom: 0.5em;
-    font-weight: medium;
     font-size: var(--medium-ft);
 }
 
