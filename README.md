@@ -1,6 +1,6 @@
 # Egyptian Ratscrew Game
 
-This is a 2-player variation of the Egyptian Ratscrew card game developed using React.
+This is a 2-player variation of the Egyptian Ratscrew card game developed using React. Please turn on the sound for the best playing experience.
 
 ## Running the app locally
 
