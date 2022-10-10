@@ -70,7 +70,7 @@ export default () => {
       setCanFlip(false)
       setTimeout(() => {
         setCanFlip(true)
-      }, 500)
+      }, 450)
 
       playFlipSound()
       
