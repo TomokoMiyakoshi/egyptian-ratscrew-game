@@ -10,6 +10,12 @@ Clone the repository
 git clone https://github.com/TomokoMiyakoshi/egyptian-ratscrew-game.git
 ```
 
+Change into the repository directory
+
+```bash
+cd egyptian-ratscrew-game
+```
+
 Install required npm packages
 
 ```bash
